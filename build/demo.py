@@ -8,7 +8,7 @@ import numpy as np
 import torch
 import cv2 as cv
 from PIL import Image
-import cvlib as cvl
+# import cvlib as cvl
 
 # my custom
 from face_lib import *
