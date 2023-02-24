@@ -101,43 +101,6 @@ def open_webcam(device_number=1):
     
     return webcam
 
-def detect_face(frame):
-    ## face detection
-    face, confidence = cvl.detect_face(frame)
-    ##
-    for idx, f in enumerate(face):
-                
-        (startX, startY) = f[0], f[1]
-        (endX, endY) = f[2], f[3]
-        
-        if 0 <= startX <= frame.shape[1] and 0 <= endX <= frame.shape[1] and 0 <= startY <= frame.shape[0] and 0 <= endY <= frame.shape[0]:
-            
-            ## detected face frame and preprocessing for network input
-            face_region = frame[startY:endY, startX:endX]
-            face_region1 = cv.resize(face_region, (112, 112), interpolation = cv.INTER_AREA)
-            ##
-
-            ## face verification
-            prediction =  1#np.argmax(model.predict(x))
-            
-            if prediction == 2: # 마스크 미착용으로 판별되면, 
-                cv.rectangle(frame, (startX,startY), (endX,endY), (0,0,255), 2)
-                Y = startY - 10 if startY - 10 > 10 else startY + 10
-                text = "No Mask " #({:.2f}%)".format((1 - prediction[0][0])*100)
-                cv.putText(frame, text, (startX,Y), cv.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
-                
-            elif prediction == 1: # 마스크 착용으로 판별되면
-                cv.rectangle(frame, (startX,startY), (endX,endY), (0,255,0), 2)
-                Y = startY - 10 if startY - 10 > 10 else startY + 10
-                text = "Mask "#({:.2f}%)".format(prediction[0][0]*100)
-                cv.putText(frame, text, (startX,Y), cv.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,0), 2)
-            
-            else : # 올바르지 않는 착용
-                cv.rectangle(frame, (startX,startY), (endX,endY), (0,255,255), 2)
-                Y = startY - 10 if startY - 10 > 10 else startY + 10
-                text = "Incorrect Mask "
-                cv.putText(frame, text, (startX,Y), cv.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
-
 def backend_mtcnn(frame):
     # img = cv.cvtColor(frame,cv.COLOR_BGR2RGB)
     img = frame
