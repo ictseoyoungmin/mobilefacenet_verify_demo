@@ -9,7 +9,7 @@ import torch
 from torchvision import transforms
 import cv2 as cv
 from PIL import Image
-import cvlib as cvl
+# import cvlib as cvl
 
 # my custom
 # Use '.' to reference in ipynb.
@@ -29,16 +29,16 @@ print(device)
 clf_mode = 1
 
 ### clf model
-if clf_mode == 1:
-    clf_model = OOnetFCN(3).to(device)
-    clf_model.load_state_dict(torch.load(r'build/pre_trained\oonet_123.pth'))
-    # clf_model.load_state_dict(torch.load(r'result\012\oonet_0.8281.pth'))
-elif clf_mode == 2:
-    clf_model = OOnet(10).to(device)
-    clf_model.load_state_dict(torch.load(r'build/pre_trained\oonet_fc_0.8697_4.pth'))
-elif clf_mode == 3:
-    clf_model = CustomResNet(10).to(device)
-    clf_model.load_state_dict(torch.load(r'build/pre_trained\oonet_fc_0.6380_49.pth'))
+# if clf_mode == 1:
+#     clf_model = OOnetFCN(3).to(device)
+#     clf_model.load_state_dict(torch.load(r'build/pre_trained\oonet_123.pth'))
+#     # clf_model.load_state_dict(torch.load(r'result\012\oonet_0.8281.pth'))
+# elif clf_mode == 2:
+#     clf_model = OOnet(10).to(device)
+#     clf_model.load_state_dict(torch.load(r'build/pre_trained\oonet_fc_0.8697_4.pth'))
+# elif clf_mode == 3:
+#     clf_model = CustomResNet(10).to(device)
+#     clf_model.load_state_dict(torch.load(r'build/pre_trained\oonet_fc_0.6380_49.pth'))
 # clf_model.to(device)
 
 ### arc model
@@ -116,7 +116,7 @@ def backend_mtcnn(frame):
     return bounding_boxes
 
 def backend_cvlib(frame):
-    faces, confidence = cvl.detect_face(frame)
+    # faces, confidence = cvl.detect_face(frame)
     # for  f in face:
                 
     #     (startX, startY) = f[0], f[1]

@@ -11,7 +11,7 @@ from PIL import Image
 # import cvlib as cvl
 
 # my custom
-from face_lib import *
+from demo_lib import prepare_facebank,open_webcam,infer
 
 # [insightface]
 from mtcnn import *
