@@ -41,7 +41,7 @@ def draw_box_name(bbox,frame,name='None'):
 if __name__ == '__main__':
     backend = MTCNN()
     model = MobileFaceNet(512).to(conf.device)
-    model.load_state_dict(torch.load(r'build\pre_trained\mfn_2023-02-02_acc0.9290.pth'))
+    model.load_state_dict(torch.load(r'build/pre_trained/mfn_2023-02-02_acc0.9290.pth',map_location=conf.device))
     tta = True
     conf.threshold = 0.8
     targets, names = prepare_facebank(conf, model, backend, tta = tta)
