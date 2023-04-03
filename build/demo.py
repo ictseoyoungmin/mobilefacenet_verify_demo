@@ -3,7 +3,7 @@ from pathlib import Path
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
-
+import time
 import numpy as np
 import torch
 import cv2 as cv
@@ -11,7 +11,7 @@ from PIL import Image
 # import cvlib as cvl
 
 # my custom
-from demo_lib import prepare_facebank,open_webcam,infer
+from demo_lib import prepare_facebank,open_webcam,infer,load_facebank
 
 # [insightface]
 from mtcnn import *
@@ -42,12 +42,14 @@ if __name__ == '__main__':
     backend = MTCNN()
     model = MobileFaceNet(512).to(conf.device)
     model.load_state_dict(torch.load(r'build/pre_trained/mfn_2023-02-02_acc0.9290.pth',map_location=conf.device))
+    model.eval()
     tta = True
     conf.threshold = 0.8
-    targets, names = prepare_facebank(conf, model, backend, tta = tta)
+    # targets, names = prepare_facebank(conf, model, backend, tta = tta)
+    targets, names = load_facebank(conf)
     ## cam load
-    cam = open_webcam(1)
-    
+    cam = open_webcam('http://192.168.0.33:4747/video')
+    pTime = 0
     ## main loop
     while(True):
         ret, frame = cam.read()
@@ -76,6 +78,11 @@ if __name__ == '__main__':
                 face = face.astype(np.int16) 
                 # print(names)
                 frame = draw_box_name(face,frame,names[results[idx]+1] + '_{:.2f}'.format(score[idx]))
+        # FPS
+        cTime = time.time()
+        fps = 1/(cTime-pTime)
+        pTime = cTime
+        cv.putText(frame,f'FPS: {int(fps)}',(40,80),cv.FONT_HERSHEY_PLAIN,1,(255,0,0),1)
         ## show
         cv.imshow('frame',frame)
 

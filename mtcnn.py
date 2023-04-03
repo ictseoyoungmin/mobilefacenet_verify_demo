@@ -91,11 +91,18 @@ class MTCNN():
                 bounding_boxes.append(boxes)
 
             # collect boxes (and offsets, and scores) from different scales
-            bounding_boxes = np.array([i for i in bounding_boxes if i is not None])
-            if bounding_boxes.shape == (0,):
+            try:
+                bounding_boxes = [list(i) for i in bounding_boxes if i is not None]
+                if None in bounding_boxes or bounding_boxes== []:
+                    return [],[]
+                # bounding_boxes = np.array(bounding_boxes)
+                
+            except:
+                print(bounding_boxes)
                 return [],[]
+            
+            
             bounding_boxes = np.vstack(bounding_boxes)
-
             keep = nms(bounding_boxes[:, 0:5], nms_thresholds[0])
             bounding_boxes = bounding_boxes[keep]
 
